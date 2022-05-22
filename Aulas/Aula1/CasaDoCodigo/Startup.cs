@@ -19,6 +19,8 @@ namespace CasaDoCodigo {
         public void ConfigureServices(IServiceCollection services) {
 
             services.AddMvc();
+            services.AddDistributedMemoryCache();
+            services.AddSession();
 
             string connectionString = Configuration.GetConnectionString("Default");
 
@@ -28,6 +30,9 @@ namespace CasaDoCodigo {
 
             services.AddTransient<IDataService, DataService>();
             services.AddTransient<IProdutoRepository, ProdutoRepository>();
+            services.AddTransient<IPedidoRepository, PedidoRepository>();
+            services.AddTransient<ICadastroRepository, CadastroRepository>();
+            services.AddTransient<IItemPedidoRepository, ItemPedidoRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider) {
@@ -40,11 +45,12 @@ namespace CasaDoCodigo {
             }
 
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseMvc(routes => {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Pedido}/{action=Carrossel}/{id?}");
+                    template: "{controller=Pedido}/{action=Carrossel}/{codigo?}");
             });
 
             serviceProvider
