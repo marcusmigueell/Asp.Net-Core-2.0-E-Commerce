@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
@@ -51,17 +52,22 @@ namespace CasaDoCodigo.Models {
         public string CEP { get; set; } = "";
     }
 
+    [DataContract]
     public class ItemPedido : BaseModel {
 
         public ItemPedido() { }
 
         [Required]
+        [DataMember]
         public Pedido Pedido { get; private set; }
         [Required]
+        [DataMember]
         public Produto Produto { get; private set; }
         [Required]
+        [DataMember]
         public int Quantidade { get; private set; }
         [Required]
+        [DataMember]
         public decimal PrecoUnitario { get; private set; }
 
         public ItemPedido(Pedido pedido, Produto produto, int quantidade, decimal precoUnitario) {
@@ -69,6 +75,10 @@ namespace CasaDoCodigo.Models {
             Produto = produto;
             Quantidade = quantidade;
             PrecoUnitario = precoUnitario;
+        }
+
+        internal void AtualizaQuantidade(int quantidade) {
+            Quantidade = quantidade;
         }
     }
 
